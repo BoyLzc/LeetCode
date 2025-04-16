@@ -43,9 +43,39 @@ func removeElement2(slice []int, index int) []int {
 	slice[index] = slice[len(slice)-1] // 用最后一个元素覆盖目标元素
 	return slice[:len(slice)-1]        // 截取去掉最后一个元素
 }
+
+// 暴力破解法
+func removeElement3(nums []int, val int) int {
+	count := len(nums)
+	for i := 0; i < count; i++ {
+		if nums[i] == val {
+			for j := i + 1; j < count; j++ {
+				// 从后往前移
+				nums[j-1] = nums[j]
+			}
+			i--
+			count--
+		}
+	}
+	return count
+}
+
+// 双指针法：通过一个快指针和慢指针在一个for循环下完成两个for循环工作
+func removeElement4(nums []int, val int) int {
+	var slowIndex int = 0
+	for fastIndex := 0; fastIndex < len(nums); fastIndex++ {
+		if nums[fastIndex] != val {
+			nums[slowIndex] = nums[fastIndex]
+			slowIndex++
+		}
+	}
+	return slowIndex
+}
+
 func main() {
 	// 切片
-	nums := []int{3, 2, 3, 2, 3}
+	nums := []int{3, 2, 2, 3, 2}
 	//removeElement(nums, 2)
-	fmt.Println(removeElement(nums, 3))
+	fmt.Println(removeElement4(nums, 2))
+	fmt.Println(nums)
 }
